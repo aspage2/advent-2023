@@ -1,7 +1,7 @@
-
 use std::env;
 use std::fs;
 
+// Map word digits to the number they represent.
 static DIGITS: [(&str, u32); 9] = [
     ("one", 1),
     ("two", 2),
@@ -14,9 +14,13 @@ static DIGITS: [(&str, u32); 9] = [
     ("nine", 9),
 ];
 
-fn take_number(s: &Vec<u8>, idx: usize) -> Option<u32> {
+// parse_number_at_index parses the bytestring at the given index for
+// either a single ascii digit or a lowercase digit "word".
+// If either are found, the corresponding numerical digit is
+// returned, otherwise None.
+fn parse_number_at_index(s: &Vec<u8>, idx: usize) -> Option<u32> {
     if idx >= s.len() {
-        return None
+        return None;
     }
     let rel = (s[idx] as i32) - ('0' as i32);
     if rel >= 0 && rel <= 9 {
@@ -27,10 +31,14 @@ fn take_number(s: &Vec<u8>, idx: usize) -> Option<u32> {
             return Some(d);
         }
     }
-    return None
+    return None;
 }
 
-fn get_number(s: &str) -> u32 {
+// get_number_from_line parses the input string to find
+// the first and last "digit" in the string. "digits" are
+// any substring within the input string that are identified
+// by the function parse_number_at_index.
+fn get_number_from_line(s: &str) -> u32 {
     let s_bytes: Vec<u8> = s.bytes().collect();
 
     let mut first: Option<u32> = None;
@@ -38,40 +46,38 @@ fn get_number(s: &str) -> u32 {
     let mut idx: usize = 0;
 
     while idx < s_bytes.len() {
-
-        let res = take_number(&s_bytes, idx);
-        match res {
-            None => {},
-            Some(digit) => {
-                match first {
-                    None => {
-                        first = Some(digit);
-                        last = Some(digit);
-                    },
-                    Some(_) => {
-                        last = Some(digit)
-                    }
-                };
-            }
+        let res = parse_number_at_index(&s_bytes, idx);
+        if res.is_none() {
+            continue;
+        }
+        if first.is_none() {
+            first = res;
+            last = res;
+        } else {
+            last = res;
         }
         idx += 1;
     }
-    return 10 * first.unwrap_or_default() + last.unwrap_or_default()
+    return 10 * first.unwrap_or_default() + last.unwrap_or_default();
 }
 
 fn main() {
+    // Parse args
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
         println!("Please enter filename");
-        return
+        return;
     }
-    let contents = args.last()
+    // Read input file
+    let contents = args
+        .last()
         .and_then(|fname| fs::read_to_string(fname).ok())
         .expect("couldn't read file");
 
+    // Sum up control values
     let mut total = 0;
     for line in contents.lines() {
-        let num = get_number(line);
+        let num = get_number_from_line(line);
         println!("{} ({})", &line, &num);
         total += num;
     }
