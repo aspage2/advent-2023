@@ -22,9 +22,8 @@ fn parse_number_at_index(s: &Vec<u8>, idx: usize) -> Option<u32> {
     if idx >= s.len() {
         return None;
     }
-    let rel = (s[idx] as i32) - ('0' as i32);
-    if rel >= 0 && rel <= 9 {
-        return Some(rel as u32);
+    if s[idx].is_ascii_digit() {
+        return Some((s[idx] - b'0') as u32);
     }
     for (st, d) in DIGITS {
         if s[idx..].starts_with(st.as_bytes()) {
