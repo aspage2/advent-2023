@@ -2,6 +2,10 @@ use std::collections::hash_map;
 use std::env;
 use std::fs;
 
+fn shits() -> Result<String, dyn std::error::Error> {
+    fs::read_to_string("Hello.txt")
+}
+
 fn parse(line: &str) -> (Vec<u8>, Vec<u8>) {
     let words: Vec<&str> = line.split(' ').filter(|s| s.len() != 0).skip(2).collect();
 
