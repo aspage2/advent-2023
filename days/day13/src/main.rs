@@ -16,10 +16,10 @@ impl Board {
 
         for line in contents.lines() {
             if line == "" {
-                ret.push(Board{
-                    width: curr_width, 
-                    height: curr_height, 
-                    cells: curr
+                ret.push(Board {
+                    width: curr_width,
+                    height: curr_height,
+                    cells: curr,
                 });
                 curr = Vec::new();
                 curr_width = 0;
@@ -32,10 +32,10 @@ impl Board {
             }
             curr_height += 1;
         }
-        ret.push(Board{
-            width: curr_width, 
-            height: curr_height, 
-            cells: curr
+        ret.push(Board {
+            width: curr_width,
+            height: curr_height,
+            cells: curr,
         });
         ret
     }
@@ -54,7 +54,7 @@ impl Board {
 
     fn get_col(&self, c: usize) -> u64 {
         let mut ret = 0;
-        for r in 0..self.height{
+        for r in 0..self.height {
             ret = (ret << 1) | if self.get(r, c) { 1 } else { 0 };
         }
         ret
@@ -94,7 +94,7 @@ fn mirror_center(nums: &Vec<u64>) -> Option<usize> {
                 if fixed_smudge || (mask == 0 || (mask & (mask - 1)) != 0) {
                     bad = true;
                     break;
-                }             
+                }
                 fixed_smudge = true;
             }
             if lo == 0 || hi == l - 1 {
@@ -113,7 +113,7 @@ fn mirror_center(nums: &Vec<u64>) -> Option<usize> {
 fn print_with_col_mirror(b: &Board, col: usize) {
     let mut data: String = String::new();
 
-    data.extend(std::iter::repeat(' ').take(col-1));
+    data.extend(std::iter::repeat(' ').take(col - 1));
     data.push_str("><\n");
 
     for r in 0..b.height {
@@ -133,7 +133,7 @@ fn print_with_row_mirror(b: &Board, row: usize) {
     let mut data: String = String::new();
 
     for r in 0..b.height {
-        if r == row - 1{
+        if r == row - 1 {
             data.push('v');
         } else if r == row {
             data.push('^');
