@@ -211,6 +211,12 @@ fn main() {
     let mut cycle_start: usize = 0;
     let mut cycle_end: usize = 0;
 
+    // Continue performing cycles, keeping track of intermediate boards
+    // until we reach a board we've seen before. The position of that
+    // board up to (and exclusing) the current cycle # is a **test cycle**.
+    //
+    // With the incremental vec we track, the board state after N tests will
+    // be (N - cycle_start) % (cycle_end - cycle_start + 1)
     for ind in 1.. {
         b.tilt(Direction::North);
         b.tilt(Direction::West);
