@@ -1,3 +1,6 @@
+# Archived
+**This project has been moved here: https://github.com/aspage2/advent-of-code**
+
 # Advent of Code 2023
 
 I use AoC to learn new programming languages. I challenge myself to work through AoC
